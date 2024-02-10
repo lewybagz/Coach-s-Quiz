@@ -587,7 +587,7 @@ function playCorrectSound() {
   setTimeout(() => {
     sound.pause();
     sound.currentTime = 0; // Reset for next time
-  }, 500); // 300 milliseconds = 0.3 seconds
+  }, 600); // 300 milliseconds = 0.3 seconds
 }
 
 // Function to play incorrect sound (excluding last 0.2 seconds)
