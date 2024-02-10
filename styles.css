@@ -174,8 +174,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.5em;
-  min-width: 60vw;
-  max-width: 60vw;
+  min-width: 70vw;
+  max-width: 70vw;
   height: 550px;
   margin: 0 auto;
   border: 2px solid white;
@@ -299,7 +299,8 @@ body {
     max-width: 1000px;
     text-align: center;
     font-size: 1.5em;
-    max-width: 650px;
+    width: 650px;
+    height: 72px;
     font-weight: 700;
     font-family: "Dosis", sans-serif;
     padding: 0;
