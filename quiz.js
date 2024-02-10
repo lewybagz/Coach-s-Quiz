@@ -223,6 +223,7 @@ let currentQuestionIndex = 0;
 
 function startQuiz() {
   // Code to start the quiz
+  resetQuizUI();
   showQuestion(questions[currentQuestionIndex]);
 }
 let currentScore = 0;
@@ -288,11 +289,10 @@ function processUserData(username) {
         currentScore = userData.score; // You might want to reset or update this score based on your quiz logic
         correctAnswers = userData.correctAnswers;
         incorrectAnswers = userData.incorrectAnswers;
-
+        resetQuizUI();
         // Update the UI for a returning user
         formWrapper.style.display = "none";
         currentScoreText.innerHTML = `Score: <span>${currentScore}<span>`;
-        // Optionally reset or update the quiz for the returning user
       } else {
         // This is a new user. Initialize their data in Firestore.
         setDoc(
@@ -408,6 +408,7 @@ function selectAnswer(answerIndex) {
   if (selectedAnswer.correct === true || attempts === 2) {
     if (currentQuestionIndex === questions.length - 1) {
       handleEndOfQuiz();
+      document.getElementById("qstn-answer").style.display = "none";
     } else {
       // If there are more questions, set a delay for moving to the next question
       questionTimeout = setTimeout(moveToNextQuestion, 3000);
@@ -465,6 +466,7 @@ nextButton.addEventListener("click", () => {
 });
 
 previousButton.addEventListener("click", () => {
+  document.getElementById("buttonClick").play();
   if (currentQuestionIndex > 0) {
     currentQuestionIndex--;
     progressIndex = currentQuestionIndex + 1; // Adjust progressIndex accordingly
@@ -486,6 +488,7 @@ restartButton.addEventListener("click", () => {
     console.error("No current user defined");
     return;
   }
+  document.getElementById("qstn-answer").style.display = "block";
   userContainer.classList.remove("move");
   userContainer.classList.add("user-info-container");
   currentUserDisplay.innerHTML = `<span>${currentUser}</span>`;
@@ -556,11 +559,11 @@ function updateLeaderBoardUI() {
         const data = doc.data();
         const listItem = document.createElement("li");
         listItem.className = "list-item";
-        listItem.innerText = `${rank}. ${doc.id}: ${data.score}`;
+        listItem.innerHTML = `<span>${rank}. ${doc.id}: ${data.score}</span> `;
 
         // Add a trophy icon to the top player
         if (rank === 1) {
-          listItem.innerHTML = `<i class="fa-solid fa-trophy"></i> ${listItem.innerText}`;
+          listItem.innerHTML = `<i class="fa-solid fa-trophy"></i> <span>${listItem.innerText}</span>`;
           listItem.classList.add("first-item");
         }
 
@@ -578,6 +581,18 @@ function updateLeaderBoardUI() {
 }
 var sound = document.getElementById("correctOrNah");
 
+function resetQuizUI() {
+  // Reset the current score and answers counters to zero for the UI
+  currentScore = 0;
+  correctAnswers = 0;
+  incorrectAnswers = 0;
+
+  // Update the UI elements to reflect the reset state
+  currentScoreText.innerHTML = `Score: <span>0</span>`;
+  currentCorrectAnswers.innerHTML = `Correct: <span>0</span>`;
+  currentIncorrectAnswers.innerHTML = `Incorrect: <span>0</span>`;
+}
+
 // Function to play correct sound (first 0.3 seconds)
 function playCorrectSound() {
   sound.currentTime = 0; // Start at the beginning
@@ -587,7 +602,7 @@ function playCorrectSound() {
   setTimeout(() => {
     sound.pause();
     sound.currentTime = 0; // Reset for next time
-  }, 600); // 300 milliseconds = 0.3 seconds
+  }, 550);
 }
 
 // Function to play incorrect sound (excluding last 0.2 seconds)
@@ -620,21 +635,54 @@ function handleEndOfQuiz() {
   const userDocRef = doc(db, "userScores", currentUser);
 
   // Update Firestore with the end of quiz data for the current user
-  setDoc(
-    userDocRef,
-    {
-      score: currentScore,
-      correctAnswers: correctAnswers,
-      incorrectAnswers: incorrectAnswers,
-      timestamp: serverTimestamp(),
-    },
-    { merge: true }
-  )
-    .then(() => {
-      updateLeaderBoardUI();
+  getDoc(userDocRef)
+    .then((docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        // Check if the new score is higher than the existing score
+        if (currentScore > (userData.score || 0)) {
+          // Update Firestore only if the new score is higher
+          setDoc(
+            userDocRef,
+            {
+              score: currentScore,
+              correctAnswers: correctAnswers,
+              incorrectAnswers: incorrectAnswers,
+              timestamp: serverTimestamp(),
+            },
+            { merge: true }
+          )
+            .then(updateLeaderBoardUI)
+            .catch((error) => {
+              console.error("Error updating user score in Firestore: ", error);
+            });
+        } else {
+          // If the score is not higher, just update the leaderboard
+          updateLeaderBoardUI();
+        }
+      } else {
+        // If the user does not exist, create the new user data
+        setDoc(
+          userDocRef,
+          {
+            score: currentScore,
+            correctAnswers: correctAnswers,
+            incorrectAnswers: incorrectAnswers,
+            timestamp: serverTimestamp(),
+          },
+          { merge: true }
+        )
+          .then(updateLeaderBoardUI)
+          .catch((error) => {
+            console.error(
+              "Error creating new user score in Firestore: ",
+              error
+            );
+          });
+      }
     })
     .catch((error) => {
-      console.error("Error updating user score in Firestore: ", error);
+      console.error("Error getting user document from Firestore: ", error);
     });
 }
 updateLeaderBoardUI();

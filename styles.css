@@ -39,7 +39,7 @@ body {
   font-family: "Lato", sans-serif;
 }
 
-.leaderboard-ist {
+.leaderboard-list {
   list-style: none;
   padding: 0;
 }
@@ -52,6 +52,12 @@ body {
   border-bottom: 1px solid #ccc;
   max-width: 50%;
   background-color: whitesmoke;
+
+  & span {
+    font-weight: 800;
+    font-family: "Dosis", sans-serif;
+    letter-spacing: 0.75px;
+  }
 }
 
 .first-item {
@@ -204,7 +210,7 @@ body {
       display: flex;
       flex-direction: column;
       position: absolute;
-      top: 250%;
+      top: 140px;
       left: 50%;
       transform: translate(-50%, -50%);
       transition: transform 0.5s ease-in-out;
@@ -436,7 +442,7 @@ body {
     text-align: center;
     position: absolute;
     left: 50%;
-    top: 80%;
+    top: 90%;
     transform: translate(-50%, -50%);
     cursor: pointer;
 
