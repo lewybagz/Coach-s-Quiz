@@ -224,7 +224,7 @@ body {
         margin-bottom: 10px;
         padding: 10px;
         background-color: #f3f3f3;
-        border-radius: 5px;
+        border-radius: 20px;
         /* Use multiple box shadows for a deeper 3D effect */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
           /* Inner shadow */ 0 6px 20px rgba(0, 0, 0, 0.1),
@@ -262,11 +262,10 @@ body {
         margin-bottom: 10px;
         padding: 10px;
         background-color: #f3f3f3;
-        border-radius: 5px;
+        border-radius: 20px;
         /* Use multiple box shadows for a deeper 3D effect */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
-          /* Inner shadow */ 0 6px 20px rgba(0, 0, 0, 0.1),
-          /* Mid-level shadow */ 0 8px 25px rgba(0, 0, 0, 0.2); /* Deepest shadow */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1),
+          0 8px 25px rgba(0, 0, 0, 0.2);
         font-family: "Dosis", sans-serif;
         font-weight: 700;
         font-size: 1.5em;
@@ -294,10 +293,6 @@ body {
 
   & #question-container {
     transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  & #question-container,
-  #correct-answer-message,
-  #incorrect-answer-message {
     position: relative;
   }
 
@@ -307,7 +302,8 @@ body {
     align-items: center;
     max-width: 1000px;
     text-align: center;
-    font-size: 2em;
+    font-size: 1.5em;
+    max-width: 650px;
     font-weight: 700;
     font-family: "Dosis", sans-serif;
     padding-inline: 2em;
@@ -326,34 +322,76 @@ body {
   #answer-buttons .btn {
     height: 50px;
     font-size: 1.25em;
-    background-color: #741ede; /* Base color */
+    background-color: #741ede;
     color: white;
     font-weight: 600;
     letter-spacing: 1px;
-    border-radius: 10px;
+    border-radius: 20px;
     transition: all 0.2s ease-in-out;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px rgba(0, 0, 0, 0.2),
-      /* Bottom shadow for depth */ inset 0 2px rgba(255, 255, 255, 0.5); /* Top inner shadow for 3D effect */
-    border: none; /* Remove border for a cleaner 3D effect */
+      /* Bottom shadow for depth */ inset 0 2px rgba(255, 255, 255, 0.5);
+    border: none;
 
     &:hover {
-      background-color: #5cb85c; /* Lighter shade for a raised effect */
+      border-radius: 10px;
+      background-color: #5cb85c;
       box-shadow: 0 6px rgba(0, 0, 0, 0.3),
         /* Increase bottom shadow on hover */ inset 0 2px
-          rgba(255, 255, 255, 0.5); /* Maintain the inner shadow */
+          rgba(255, 255, 255, 0.5);
     }
 
     &:active {
-      background-color: #3e8e41; /* Darker shade for a pressed effect */
+      background-color: #3e8e41;
       box-shadow: 0 2px rgba(0, 0, 0, 0.3),
-        /* Smaller shadow for depth */ inset 0 2px rgba(255, 255, 255, 0.5); /* Maintain the inner shadow */
-      transform: scale(0.7); /* Simulate the button being pressed */
+        /* Smaller shadow for depth */ inset 0 2px rgba(255, 255, 255, 0.5);
+      transform: scale(0.7);
     }
   }
 
+  & #progress-container {
+    font-family: "Dosis", sans-serif;
+    display: flex;
+    align-items: center;
+    width: 98%;
+    padding: 0.5em;
+    position: relative;
+    background-color: #ddd;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    & #progress-bar {
+      height: 20px;
+      border-radius: 50px;
+      width: 0%;
+      transition: width 0.5s;
+      z-index: 1;
+      background: linear-gradient(
+        to top,
+        #3e8e41 0%,
+        #4caf50 50%,
+        #5cb85c 100%
+      ); /* 3D gradient effect */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Shadow for 3D effect */
+    }
+
+    & #progress {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-size: 1.7em;
+      color: black;
+      letter-spacing: 0.75px;
+      z-index: 2;
+
+      & span {
+        font-weight: 600;
+      }
+    }
+  }
   & .controls {
     display: flex;
     justify-content: center;
@@ -389,71 +427,6 @@ body {
         border: none;
       }
     }
-  }
-  & #progress-container {
-    font-family: "Dosis", sans-serif;
-    display: flex;
-    align-items: center;
-    width: 980px;
-    padding: 0.5em;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ddd;
-    border-radius: 50px; /* Match the progress bar's border-radius */
-    overflow: hidden; /* Ensure the inner shadow doesn't spill outside */
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
-
-    & #progress-bar {
-      height: 20px;
-      border-radius: 50px;
-      width: 0%; /* Initial width */
-      transition: width 0.5s; /* Smooth transitions */
-      z-index: 1; /* Ensure the bar does not cover the text */
-      background: linear-gradient(
-        to top,
-        #3e8e41 0%,
-        #4caf50 50%,
-        #5cb85c 100%
-      ); /* 3D gradient effect */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Shadow for 3D effect */
-    }
-
-    & #progress {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      font-size: 1.7em;
-      color: black;
-      letter-spacing: 0.75px;
-      z-index: 2;
-
-      & span {
-        font-weight: 600;
-      }
-    }
-  }
-
-  #correct-answer-message,
-  #incorrect-answer-message {
-    font-size: 2em;
-    font-weight: 800;
-    position: absolute;
-    left: 50%;
-    top: 95%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    text-align: center;
-    pointer-events: none;
-    padding: 0.25em;
-    font-family: "Lato", sans-serif;
-  }
-
-  & #correct-answer-message {
-    color: green;
-  }
-  & #incorrect-answer-message {
-    color: red;
   }
   & #restart-btn {
     display: flex;

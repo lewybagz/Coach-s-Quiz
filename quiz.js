@@ -353,8 +353,6 @@ function showQuestion(question) {
 }
 
 function selectAnswer(answerIndex) {
-  document.getElementById("incorrect-answer-message").textContent = "";
-  document.getElementById("correct-answer-message").textContent = "";
   const selectedAnswer = questions[currentQuestionIndex].answers[answerIndex];
   const selectedButton = answerButtonsElement.children[answerIndex];
   const answerButtons = document.getElementsByClassName("btn");
@@ -370,8 +368,6 @@ function selectAnswer(answerIndex) {
     currentScoreText.innerHTML = `Score: <span>${currentScore}</span>`;
     const randomIndex = Math.floor(Math.random() * successMessages.length);
     const successMessage = successMessages[randomIndex];
-    document.getElementById("correct-answer-message").textContent =
-      successMessage;
     selectedButton.style.backgroundColor = "green";
     selectedButton.style.backgroundImage = "none";
     for (let button of answerButtons) {
@@ -385,8 +381,6 @@ function selectAnswer(answerIndex) {
     playIncorrectSound();
     const randomIndex = Math.floor(Math.random() * incorrectMessages.length);
     const incorrectMessage = incorrectMessages[randomIndex];
-    document.getElementById("incorrect-answer-message").textContent =
-      incorrectMessage;
     selectedButton.style.backgroundColor = "red";
     selectedButton.style.backgroundImage = "none";
     attempts++;
@@ -435,8 +429,6 @@ function updateProgressBar() {
 }
 
 function moveToNextQuestion() {
-  document.getElementById("correct-answer-message").textContent = "";
-  document.getElementById("incorrect-answer-message").textContent = "";
   updateProgressBar();
   document.getElementById("nextQuestionSound").play();
   currentQuestionIndex++;
@@ -453,8 +445,6 @@ function moveToNextQuestion() {
 
 nextButton.addEventListener("click", () => {
   document.getElementById("buttonClick").play();
-  document.getElementById("correct-answer-message").textContent = "";
-  document.getElementById("incorrect-answer-message").textContent = "";
   // Check if it's not the last question before incrementing currentQuestionIndex
   if (currentQuestionIndex < questions.length - 1) {
     updateProgressBar();
@@ -475,8 +465,6 @@ nextButton.addEventListener("click", () => {
 });
 
 previousButton.addEventListener("click", () => {
-  document.getElementById("correct-answer-message").textContent = "";
-  document.getElementById("incorrect-answer-message").textContent = "";
   if (currentQuestionIndex > 0) {
     currentQuestionIndex--;
     progressIndex = currentQuestionIndex + 1; // Adjust progressIndex accordingly
@@ -620,8 +608,6 @@ function handleEndOfQuiz() {
   document.getElementById("quizOverSound").play();
   document.getElementById("question").textContent = "";
   document.getElementById("answer-buttons").textContent = "";
-  document.getElementById("correct-answer-message").textContent = "";
-  document.getElementById("incorrect-answer-message").textContent = "";
   previousButton.style.display = "none";
   nextButton.style.display = "none";
   restartButton.style.display = "flex";
