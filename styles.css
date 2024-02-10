@@ -176,8 +176,7 @@ body {
   gap: 0.5em;
   min-width: 60vw;
   max-width: 60vw;
-  min-height: 600px;
-  max-height: 600px;
+  height: 550px;
   margin: 0 auto;
   border: 2px solid white;
   background-color: whitesmoke;
@@ -192,7 +191,6 @@ body {
   & .qstn-answer {
     position: relative;
     top: 20px;
-    left: 20px;
   }
 
   & .user-questions-wrapper {
@@ -200,6 +198,7 @@ body {
     justify-content: space-between;
     align-items: center;
     max-width: 980px;
+    gap: 1.5em;
 
     & .move {
       display: flex;
@@ -225,7 +224,6 @@ body {
         padding: 10px;
         background-color: #f3f3f3;
         border-radius: 20px;
-        /* Use multiple box shadows for a deeper 3D effect */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
           /* Inner shadow */ 0 6px 20px rgba(0, 0, 0, 0.1),
           /* Mid-level shadow */ 0 8px 25px rgba(0, 0, 0, 0.2); /* Deepest shadow */
@@ -243,10 +241,8 @@ body {
     }
     & .user-info-container {
       position: relative;
-      left: 50px;
       display: flex;
       flex-direction: column;
-      /* margin-right: 20px; */
       width: 300px;
 
       & #current-user {
@@ -306,7 +302,7 @@ body {
     max-width: 650px;
     font-weight: 700;
     font-family: "Dosis", sans-serif;
-    padding-inline: 2em;
+    padding: 0;
     pointer-events: none;
   }
 
@@ -375,7 +371,7 @@ body {
         #4caf50 50%,
         #5cb85c 100%
       ); /* 3D gradient effect */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Shadow for 3D effect */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     }
 
     & #progress {
@@ -469,80 +465,4 @@ body {
       font-weight: 800;
     }
   }
-}
-@keyframes rotateWhistle {
-  0% {
-    transform: rotate(-5deg);
-  }
-  5% {
-    transform: rotate(5deg);
-  }
-  10% {
-    transform: rotate(-5deg);
-  }
-  15% {
-    transform: rotate(5deg);
-  }
-  20% {
-    transform: rotate(-5deg);
-  }
-  25% {
-    transform: rotate(5deg);
-  }
-  30% {
-    transform: rotate(-5deg);
-  }
-  35% {
-    transform: rotate(5deg);
-  }
-  40% {
-    transform: rotate(-5deg);
-  }
-  45% {
-    transform: rotate(5deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
-  55% {
-    transform: rotate(-5deg);
-  }
-  60% {
-    transform: rotate(5deg);
-  }
-  65% {
-    transform: rotate(-5deg);
-  }
-  70% {
-    transform: rotate(5deg);
-  }
-  75% {
-    transform: rotate(-5deg);
-  }
-  80% {
-    transform: rotate(5deg);
-  }
-  85% {
-    transform: rotate(-5deg);
-  }
-  90% {
-    transform: rotate(5deg);
-  }
-  95% {
-    transform: rotate(-5deg);
-  }
-  100% {
-    transform: rotate(-5deg);
-  }
-}
-
-.animate-whistle {
-  animation: rotateWhistle 0.1s linear;
-  animation-duration: 3s;
-}
-
-.styled-username {
-  font-weight: 700;
-  color: #7851a9;
-  letter-spacing: 0.75px;
 }
