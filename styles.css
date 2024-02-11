@@ -3,20 +3,24 @@
 * {
   box-sizing: border-box;
 }
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 body {
   background-image: url("https://media.discordapp.net/attachments/1083626681404760064/1144499729510711416/american-football-stadium-dmytro-aksonov.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+  min-height: 100vh;
+  min-width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .no-leaders {
@@ -478,10 +482,6 @@ body {
     overflow: auto;
     padding-bottom: 1em;
   }
-  .user-questions-wrapper {
-    flex-direction: column-reverse;
-    margin-bottom: 2em;
-  }
   & #progress-container {
     & #progress {
       display: none;
@@ -495,6 +495,12 @@ body {
       min-width: 100%;
       color: white;
     }
+    & .user-questions-wrapper {
+      flex-direction: column-reverse;
+      margin-bottom: 2em;
+    }
+
+    & span,
     & #question {
       font-weight: 800;
       width: 100%;
@@ -505,6 +511,12 @@ body {
     & #progress-container {
       padding: 1em;
     }
+    & #answer-buttons {
+      max-width: 100%;
+    }
+  }
+  #leaderboard {
+    min-width: 100%;
   }
   .dropdown-container {
     display: none; /* Hidden by default */

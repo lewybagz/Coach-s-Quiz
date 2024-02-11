@@ -326,7 +326,7 @@ function showQuestion(question) {
   attempts = 0;
 
   progressText.innerHTML = `<span>${progressIndex}</span> of <span>${questions.length}</span>`;
-  questionElement.textContent = question.question;
+  questionElement.innerHTML = question.question;
   answerButtonsElement.textContent = "";
 
   if (currentQuestionIndex >= questions.length - 1) {
