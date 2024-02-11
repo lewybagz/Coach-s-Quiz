@@ -21,6 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   overflow-x: hidden;
+  position: relative;
 }
 
 .no-leaders {
@@ -41,6 +42,7 @@ body {
   padding: 10px;
   min-width: 500px;
   font-family: "Lato", sans-serif;
+  z-index: 4;
 }
 
 .leaderboard-list {
@@ -139,7 +141,7 @@ body {
       margin: 0;
       padding: 0;
       margin-bottom: 0.5em;
-      font-family: "Dosis", sans-serif;
+      font-family: "Roboto", sans-serif;
     }
     & input {
       height: 60px;
@@ -315,6 +317,7 @@ body {
     font-family: "Dosis", sans-serif;
     padding: 0;
     pointer-events: none;
+    letter-spacing: 0.5px;
   }
 
   & #answer-buttons {
@@ -377,9 +380,9 @@ body {
       z-index: 1;
       background: linear-gradient(
         to top,
-        #3e8e41 0%,
-        #4caf50 50%,
-        #5cb85c 100%
+        #7851a9 0%,
+        #7851a9 50%,
+        #7851a9 100%
       ); /* 3D gradient effect */
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     }
@@ -482,7 +485,16 @@ body {
     overflow: auto;
     padding-bottom: 1em;
   }
-  & #progress-container {
+
+  #form-wrapper {
+    & #usernameForm {
+      max-width: 95vw;
+      & h3 {
+        font-size: 1.1em;
+      }
+    }
+  }
+  #progress-container {
     & #progress {
       display: none;
     }
