@@ -320,7 +320,6 @@ function processUserData(username) {
 }
 
 function showQuestion(question) {
-  // Code to display the question and answers
   updateProgressBar();
   restartButton.style.display = "none";
   attempts = 0;
@@ -350,14 +349,40 @@ function showQuestion(question) {
     questionElement.style.opacity = "1";
     questionElement.style.transform = "translateY(0)";
   }, 50);
+
+  const answerButtons = answerButtonsElement.getElementsByClassName("btn");
+  const state = questionStates[currentQuestionIndex];
+
+  answerButtonsElement.childNodes.forEach((button, index) => {
+    // Apply styles and disabled state
+    if (state.selectedAnswers.includes(index)) {
+      button.style.backgroundColor =
+        state.answerStyles[state.selectedAnswers.indexOf(index)];
+      button.style.backgroundImage = "none";
+    }
+    if (state.disabledStates && state.disabledStates[index]) {
+      button.disabled = true;
+      button.style.pointerEvents = "none";
+    }
+  });
 }
+
+const questionStates = questions.map(() => ({
+  selectedAnswers: [],
+  answerStyles: [],
+  disabledStates: [], // Initialize disabledStates for each question
+}));
 
 function selectAnswer(answerIndex) {
   const selectedAnswer = questions[currentQuestionIndex].answers[answerIndex];
   const selectedButton = answerButtonsElement.children[answerIndex];
   const answerButtons = document.getElementsByClassName("btn");
 
+  const selectedButtonIndex = answerIndex;
+
   clearTimeout(questionTimeout);
+
+  const questionState = questionStates[currentQuestionIndex];
 
   if (selectedAnswer.correct === true) {
     updateProgressBar();
@@ -367,7 +392,6 @@ function selectAnswer(answerIndex) {
     currentScore += 10;
     currentScoreText.innerHTML = `Score: <span>${currentScore}</span>`;
     const randomIndex = Math.floor(Math.random() * successMessages.length);
-    const successMessage = successMessages[randomIndex];
     selectedButton.style.backgroundColor = "green";
     selectedButton.style.backgroundImage = "none";
     for (let button of answerButtons) {
@@ -377,6 +401,14 @@ function selectAnswer(answerIndex) {
     if (attempts === 2) {
       currentScore += 10;
     }
+    for (let i = 0; i < answerButtons.length; i++) {
+      answerButtons[i].disabled = true;
+      answerButtons[i].style.pointerEvents = "none";
+      questionState.disabledStates[i] = true; // Update the disabled state
+    }
+
+    questionState.selectedAnswers.push(selectedButtonIndex);
+    questionState.answerStyles.push("green");
   } else {
     playIncorrectSound();
     const randomIndex = Math.floor(Math.random() * incorrectMessages.length);
@@ -401,8 +433,21 @@ function selectAnswer(answerIndex) {
       for (let button of answerButtons) {
         button.disabled = true;
         button.style.pointerEvents = "none";
+        questionState.disabledStates.push(true); // Store the disabled state
       }
     }
+    answerButtons.forEach((button, idx) => {
+      button.disabled = true; // Disable the button
+      questionState.disabledStates[idx] = true; // Update the state
+    });
+    for (let i = 0; i < answerButtons.length; i++) {
+      answerButtons[i].disabled = true;
+      answerButtons[i].style.pointerEvents = "none";
+      questionState.disabledStates[i] = true; // Update the disabled state
+    }
+
+    questionState.selectedAnswers.push(selectedButtonIndex);
+    questionState.answerStyles.push("red");
   }
   // If the answer is correct or max attempts reached, decide what to do next
   if (selectedAnswer.correct === true || attempts === 2) {
@@ -622,7 +667,7 @@ function playIncorrectSound() {
 function handleEndOfQuiz() {
   document.getElementById("quizOverSound").play();
   document.getElementById("question").textContent = "";
-  document.getElementById("answer-buttons").textContent = "";
+  answerButtonsElement.textContent = "";
   previousButton.style.display = "none";
   nextButton.style.display = "none";
   restartButton.style.display = "flex";
