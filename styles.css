@@ -506,4 +506,16 @@ body {
       padding: 1em;
     }
   }
+  .dropdown-container {
+    display: none; /* Hidden by default */
+  }
+
+  .leaderboard-list li:first-child {
+    cursor: pointer; /* Indicate that it's clickable */
+  }
+
+  /* Styling for dropdown when active */
+  .dropdown-container.active {
+    display: block;
+  }
 }

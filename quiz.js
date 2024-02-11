@@ -268,6 +268,7 @@ function processUserData(username) {
     return;
   }
 
+  updateLeaderBoardUI();
   // Define userDocRef here after username is set
   userDocRef = doc(db, "userScores", username);
 
@@ -586,6 +587,7 @@ function updateLeaderBoardUI() {
   getDocs(scoresQuery)
     .then((querySnapshot) => {
       const leaderBoardList = document.getElementById("leaderboard");
+      const dropdownMenu = document.getElementById("dropdown-menu");
       leaderBoardList.innerHTML = ""; // Clear existing leaderboard entries
 
       let rank = 0;
@@ -600,30 +602,38 @@ function updateLeaderBoardUI() {
       }
 
       querySnapshot.forEach((doc) => {
-        rank++; // Increment rank with each document
+        rank++;
         const data = doc.data();
         const listItem = document.createElement("li");
         listItem.className = "list-item";
-        listItem.innerHTML = `<span>${rank}. ${doc.id}: ${data.score}</span> `;
+        listItem.innerHTML = `<span>${rank}. ${doc.id}: ${data.score}</span>`;
 
-        // Add a trophy icon to the top player
+        // Add a trophy icon and 'first-item' class to the top player
         if (rank === 1) {
-          listItem.innerHTML = `<i class="fa-solid fa-trophy"></i> <span>${listItem.innerText}</span>`;
-          listItem.classList.add("first-item");
+          listItem.innerHTML = `<i class="fa-solid fa-trophy"></i> ${listItem.innerHTML}`;
+          listItem.classList.add("first-item"); // Add class for the top player
+          leaderBoardList.appendChild(listItem); // Append first item to main list
+        } else {
+          dropdownMenu.appendChild(listItem); // Append other items to dropdown
         }
 
         // Add a 'last-item' class to the last player if it's the 5th item
         if (rank === 5) {
           listItem.classList.add("last-item");
         }
-
-        leaderBoardList.appendChild(listItem);
       });
     })
     .catch((error) => {
       console.error("Error fetching leaderboard data from Firestore: ", error);
     });
 }
+
+document
+  .querySelector(".leaderboard-list li:first-child")
+  .addEventListener("click", () => {
+    document.querySelector(".dropdown-container").classList.toggle("active");
+  });
+
 var sound = document.getElementById("correctOrNah");
 
 function resetQuizUI() {
